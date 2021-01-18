@@ -12,6 +12,7 @@ import { MainMenu, MainMenuItem } from './components/MainMenu/MainMenu';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import { ContactPage } from './components/ContactPage/ContactPage';
 import { UserLoginPage } from './components/UserLoginPage/UserLoginPage';
+import CategoryPage from './components/CategoryPage/CategoryPage';
 
 const menuItems = [
   new MainMenuItem("Home", "/"),
@@ -25,8 +26,9 @@ ReactDOM.render(
     <HashRouter>
       <Switch>
         <Route exact path="/" component= { HomePage }/>
-        <Route exact path="/contact" component= { ContactPage }/>
-        <Route exact path="/user/login" component= { UserLoginPage }/>
+        <Route path="/contact" component= { ContactPage }/>
+        <Route path="/user/login" component= { UserLoginPage }/>
+        <Route path="/category/:cId" component= { CategoryPage } />
       </Switch>
     </HashRouter>
   </React.StrictMode>,
