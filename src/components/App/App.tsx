@@ -1,11 +1,14 @@
 import React from 'react';
 import './App.css';
+import { Container } from 'react-bootstrap';
+import { faHome, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function App() { //funkcionalna komponenta - vraca ono sto treba da bude renderovano
   return (
-    <div className="App">
-      Home
-    </div>
+    <Container>
+      <FontAwesomeIcon icon= { faHome } /> Home
+    </Container>
   );
 }
 
