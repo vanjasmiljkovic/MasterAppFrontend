@@ -18,6 +18,10 @@ const menuItems = [
   new MainMenuItem("Home", "/"),
   new MainMenuItem("Contact", "/contact/"),
   new MainMenuItem("Log in", "/user/login/"),
+
+  new MainMenuItem("Cat1", "/category/1/"),
+  new MainMenuItem("Cat2", "/category/2/"),
+  new MainMenuItem("Cat3", "/category/2/"),
 ];
 
 ReactDOM.render(

@@ -24,7 +24,7 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
     constructor(props: Readonly<CategoryPageProperties>) {
         super(props);
 
-        this.state = { }; 
+        this.state = { }; //state je inicijalno prazan
     }
 
     render(){
