@@ -17,7 +17,9 @@ import { UserRegistrationPage } from './components/UserRegistrationPage/UserRegi
 
 const menuItems = [
   new MainMenuItem("Home", "/"),
-  new MainMenuItem("Contact", "/contact/"),
+  new MainMenuItem("Kontakt", "/contact/"),
+  new MainMenuItem("O nama", "/about-us/"), //implementiraj
+  new MainMenuItem("Proizvodi", "/categories/"), //implementiraj padajuci meni da ima kategorije 
   new MainMenuItem("Log in", "/user/login/"),
   new MainMenuItem("Register", "/user/register/"),
 ];

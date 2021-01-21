@@ -38,13 +38,12 @@ class HomePage extends React.Component {
     
     //dopremanje podataka
     private getCategories() { 
-        api('/api/category/', 'get', {}) //api metod - backend: category.controller.ts
+        api('/api/category/?filter=parentCategoryId||$isnull', 'get', {}) //api metod - backend: category.controller.ts - vadimo samo one top level kategorije, koji nemaju parent kategoriju
             .then( (res: ApiResponse) => {
-                if (res.status === "error"|| res.status === "login") {
+                if (res.status === "error" || res.status === "login") {
                     this.setLoginState(false);
                     return;
                 }
-
                 this.putCategoriesInState(res.data);
             });
     }
