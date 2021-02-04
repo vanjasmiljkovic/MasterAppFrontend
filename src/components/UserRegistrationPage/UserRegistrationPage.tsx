@@ -4,6 +4,7 @@ import React from 'react';
 import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import api, {ApiResponse} from '../../api/api';
+import RoledMainMenu from '../RoledMainMenu/RoledMainMenu';
 
 interface UserRegistrationPageState {
     formData: {
@@ -53,6 +54,7 @@ export class UserRegistrationPage extends React.Component {
     render() {
         return (
             <Container>
+                <RoledMainMenu role="visitor" />
                 <Col md= { {span: 8, offset: 2} }> 
                     <Card>
                         <Card.Body>

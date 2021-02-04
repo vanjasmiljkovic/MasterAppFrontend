@@ -4,9 +4,10 @@ import React from 'react';
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 import api, { ApiResponse } from '../../api/api';
-import { ApiConfig } from '../../config/api.config';
 import ArticleType from '../../types/ArticleType';
 import CategoryType from '../../types/CategoryType';
+import RoledMainMenu from '../RoledMainMenu/RoledMainMenu';
+import SingleArticlePreview from '../SingleArticlePreview/SingleArticlePreview';
 
 interface CategoryPageProperties {
     match: { //izvlacenje iz URL-a
@@ -28,7 +29,16 @@ interface CategoryPageState {
         priceMinimum: number;
         priceMaximum: number;
         order: "name asc" | "name desc" | "price asc" | "price desc";
+        selectedFeatures: {
+            featureId: number;
+            value: string;
+        }[];
     };
+    features: {
+        featureId: number;
+        name: string;
+        values: string[];
+    }[];
 }
 
 interface CategoryDto {
@@ -66,8 +76,18 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
                 priceMinimum: 0.01,
                 priceMaximum: 100000,
                 order: "price asc",
-            }
+                selectedFeatures: [],
+            },
+            features: [],
         }; //state je inicijalno prazan
+    }
+
+    private setFeatures(features: any) {
+        const newState = Object.assign(this.state, {
+            features: features,
+        });
+
+        this.setState(newState);
     }
 
     private setLoginState(isLoggedIn: boolean) {
@@ -118,6 +138,7 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
         }
         return (
             <Container>
+                <RoledMainMenu role="user" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -178,6 +199,47 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
         this.setNewFilter(newFilter);
     }
 
+    private featureFilterChanged(event: React.ChangeEvent<HTMLInputElement>) {
+        const featureId = Number(event.target.dataset.featureId);
+        const value = event.target.value;
+
+        if (event.target.checked) {
+            this.addFeatureFilterValue(featureId, value);
+        }else {
+            this.removeFeatureFilterValue(featureId, value);
+        }
+    }
+
+    private addFeatureFilterValue(featureId:number, value:string) {
+        const newSelectedFeatures = [ ...this.state.filters.selectedFeatures];
+        newSelectedFeatures.push({
+            featureId: featureId,
+            value: value,
+        });
+
+        this.setSelectedFeatures(newSelectedFeatures);
+
+    }
+
+    private removeFeatureFilterValue(featureId:number, value:string) {
+        const newSelectedFeatures = this.state.filters.selectedFeatures.filter(record => {
+            if (record.featureId === featureId && record.value === value) {
+                return false;
+            }
+
+            return true;
+        });
+        this.setSelectedFeatures(newSelectedFeatures);
+    }
+
+    private setSelectedFeatures(newSelectedFeatures: any) {
+        this.setState(Object.assign(this.state, {
+            filters: Object.assign(this.state.filters, {
+                selectedFeatures: newSelectedFeatures,
+            })
+        }));
+    }
+
     private applyFilters() {
         this.getCategoryData();
     }
@@ -186,7 +248,7 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
         return (
           <>
             <Form.Group>
-                <Form.Label htmlFor="keywoards">Pretraga po kljucnim recima:</Form.Label>
+                <Form.Label htmlFor="keywoards">Kljucne reci:</Form.Label>
                 <Form.Control type="text" id="keywoards"
                               value={ this.state.filters?.keywords } 
                               onChange={ (e) => this.filterKeywordsChanged(e as any) }
@@ -202,7 +264,7 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
                                       onChange={ (e) => this.filterPriceMinChanged(e as any) }/>
                     </Col>
                     <Col xs="12" sm="6">
-                    <Form.Label htmlFor="priceMax">Cena maks:</Form.Label>
+                    <Form.Label htmlFor="priceMax">Cena max:</Form.Label>
                         <Form.Control type="number" id="priceMax"
                                       step="0.01" min="0.02" max="100000"
                                       value={ this.state.filters?.priceMaximum }
@@ -217,17 +279,37 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
                     <option value="name asc">Sortirati po nazivu - rastuce</option>
                     <option value="name desc">Sortirati po nazivu - opadajuce</option>
                     <option value="price asc">Sortirati po ceni - rastuce</option>
-                    <option value="price desc">Sortirati po ceni - rastuce</option>
+                    <option value="price desc">Sortirati po ceni - opadajuce</option>
                 </Form.Control>
             </Form.Group>
 
+            { this.state.features.map(this.printFeatureFilterComponent, this) }
+
             <Form.Group>
-                <Button variant="primary" block onClick={ () => this.applyFilters() }>
+                <Button variant="primary" style={ {backgroundColor: '#3c1361'} }block onClick={ () => this.applyFilters() }>
                     <FontAwesomeIcon icon={ faSearch } /> Pretraga
                 </Button>
             </Form.Group>
           </>  
         );
+    }
+
+    private printFeatureFilterComponent(feature: { featureId: number; name:string; values:string[]; }) {
+        return (
+            <Form.Group>
+                <Form.Label><strong>{ feature.name }</strong></Form.Label>
+                { feature.values.map(value => this.printFeatureFilterCheckBox(feature, value), this)}
+            </Form.Group>
+        );
+    }
+
+    private printFeatureFilterCheckBox(feature: any, value: string) {
+        return(
+            <Form.Check type="checkbox" label={ value } 
+            value={ value }
+            data-feature-id={ feature.featureId } 
+            onChange={ (e:any) => this.featureFilterChanged(e as any) }/>
+        )
     }
 
     private printOptionalMessage() {
@@ -292,31 +374,7 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
 
     private singleArticle(article: ArticleType){
         return (
-            <Col lg="4" md="6" sm="6" xs="12">
-                <Card className="mb-3"> 
-                    <Card.Header>
-                        <img alt={ article.name }
-                             src={ ApiConfig.PHOTO_PATH + 'small/' + article.imageUrl } 
-                             className="w-100"
-                             />
-                    </Card.Header>
-                    <Card.Body>
-                        <Card.Title as="p">
-                            <strong>{ article.name }</strong>
-                        </Card.Title>
-                        <Card.Text>
-                            { article.excerpt }
-                        </Card.Text>
-                        <Card.Text>
-                            Cena : { Number(article.price).toFixed(2) } DIN
-                        </Card.Text>
-                        <Link to={`/article/${ article.articleId }` }
-                              className="btn btn-primary btn-block btn-sm">
-                            Detaljnije o artiklu
-                        </Link>
-                    </Card.Body>
-                </Card>
-            </Col>
+            <SingleArticlePreview article={ article } />
         );
     }
 
@@ -367,12 +425,36 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
             const orderBy = orderParts[0];
             const orderDirection = orderParts[1].toUpperCase();
 
+            const featureFilters: any[] = [ ];
+
+            for (const item of this.state.filters.selectedFeatures) {
+                let found = false;
+                let foundRef = null;
+
+                for (const featureFilter of featureFilters) {
+                    if (featureFilter.featureId === item.featureId) {
+                        found = true;
+                        foundRef = featureFilter;
+                        break;
+                    }
+                } 
+
+                if (!found) {
+                    featureFilters.push({
+                        featureId: item.featureId,
+                        values: [ item.value ],
+                    });
+                } else {
+                    foundRef.values.push(item.value);
+                }
+            }
+
             api('api/article/search/', 'post', {
                 categoryId: Number(this.props.match.params.cId),
                 keywoards: this.state.filters.keywords,
                 priceMin: this.state.filters.priceMinimum,
                 priceMax: this.state.filters.priceMaximum,
-                features: [ ],
+                features: featureFilters,
                 orderBy: orderBy,
                 orderDirection: orderDirection,
             })
@@ -416,5 +498,22 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
 
                 this.setArticles(articles);
             });
+
+            this.getFeatures();
+    }
+
+    getFeatures() {
+        api('api/feature/values/' + this.props.match.params.cId, 'get', {})
+        .then((res:ApiResponse) => {
+            if (res.status === 'login') {
+                return this.setLoginState(false);
+            }
+
+            if (res.status === 'error') {
+                return this.setMessage('Doslo je do greske. Molim Vas pokusajte da osvezite stranicu');
+            }
+
+            this.setFeatures(res.data.features);
+        });
     }
 }

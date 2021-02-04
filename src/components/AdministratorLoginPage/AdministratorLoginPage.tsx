@@ -3,26 +3,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Button, Card, Col, Container, Form, Alert } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
-import api, { ApiResponse, saveToken, saveRefreshToken } from '../../api/api';
+import api, { ApiResponse, saveToken, saveRefreshToken, saveIdentity } from '../../api/api';
 import RoledMainMenu from '../RoledMainMenu/RoledMainMenu';
 
 //cuva podatak o tome da li je korisnik ulogovan ili nije
-interface UserLoginPageState {
-    email: string;
+interface AdministratorLoginPageState {
+    username: string;
     password: string;
     errorMessage: string;
     isLoggedIn: boolean;
 }
 
-export class UserLoginPage extends React.Component {
-    state: UserLoginPageState;
+export class AdministratorLoginPage extends React.Component {
+    state: AdministratorLoginPageState;
 
     constructor(props: {} | Readonly<{}>){
         super(props);
 
         //inicijalni state za nasa polja
         this.state = {
-            email: '',
+            username: '',
             password: '',
             errorMessage: '',
             isLoggedIn: false,
@@ -55,10 +55,10 @@ export class UserLoginPage extends React.Component {
 
     private doLogin() {
         api(                    //api metod iz backend-a - auth.controller
-            'auth/user/login',  //putanja
+            'auth/administrator/login',  //putanja
             'post',             //metod
             {                   //objekat koji se salje
-                email: this.state.email, 
+                username: this.state.username, 
                 password: this.state.password,
             }
         )
@@ -73,7 +73,7 @@ export class UserLoginPage extends React.Component {
                     let message = '';
 
                     switch (res.data.statusCode) {
-                        case -3001: message = 'Unknown e-mail'; break;
+                        case -3001: message = 'Unknown username'; break;
                         case -3002: message = 'Bad password'; break;
                     }
 
@@ -82,8 +82,9 @@ export class UserLoginPage extends React.Component {
                 }
 
                 //ako je status undefined - setujemo novi token i refresh token
-                saveToken('user', res.data.token);
-                saveRefreshToken('user', res.data.refreshToken);
+                saveToken('administrator', res.data.token);
+                saveRefreshToken('administrator', res.data.refreshToken);
+                saveIdentity('administrator', res.data.identity);
 
                 // preusmeriti korisnika na home-> /#/
                 this.setLoginState(true);
@@ -95,9 +96,9 @@ export class UserLoginPage extends React.Component {
         //ako je loggedin true preusmeri korisnika na pocetnu stranu
         if (this.state.isLoggedIn === true) {
             return (
-                <Redirect to="/" />
+                <Redirect to="/administrator/dashboard" />
             );
-        } 
+        }
         //u suprotnom ostavi korisnika na log in stranici
         return (
             <Container>
@@ -106,13 +107,13 @@ export class UserLoginPage extends React.Component {
                     <Card>
                         <Card.Body>
                             <Card.Title>
-                            <FontAwesomeIcon icon= { faSignInAlt } /> User Login
+                            <FontAwesomeIcon icon= { faSignInAlt } /> Administrator Login
                             </Card.Title>
                                 <Form>
                                     <Form.Group>
-                                        <Form.Label htmlFor="email">E-mail: </Form.Label>
-                                        <Form.Control type="email" id="email" 
-                                                      value= {this.state.email}
+                                        <Form.Label htmlFor="username">Username: </Form.Label>
+                                        <Form.Control type="text" id="username" 
+                                                      value= {this.state.username}
                                                       onChange= { event => this.formInputChange(event as any) } />
                                     </Form.Group>
                                     <Form.Group>
