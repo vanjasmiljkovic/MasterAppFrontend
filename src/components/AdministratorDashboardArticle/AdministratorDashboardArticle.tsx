@@ -284,6 +284,7 @@ class AdministratorDashboardArticle extends React.Component {
                     this.setLoginState(false);
                     return;
                 }
+                //console.log(res.data);
 
                 this.putArticlesInState(res.data);
             });
@@ -351,8 +352,9 @@ class AdministratorDashboardArticle extends React.Component {
             );
         }
 		return (
+            <>
+            <RoledMainMenu role="administrator" />
 			<Container>
-                <RoledMainMenu role="administrator" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -545,6 +547,7 @@ class AdministratorDashboardArticle extends React.Component {
                 </Modal>
 
             </Container>
+            </>
 		);
     }
 

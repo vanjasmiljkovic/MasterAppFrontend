@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import HomePage from './components/HomePage/HomePage';
+import ProductPage from './components/ProductPage/ProductPage';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'jquery/dist/jquery.js';
@@ -25,12 +25,14 @@ import ArticlePage from './components/ArticlePage/ArticlePage';
 import AdministratorDashboardOrder from './components/AdministratorDashboardOrder/AdministratorDashboardOrder';
 import { AdministratorLogoutPage } from './components/AdministratorLogoutPage/AdministratorLogoutPage';
 import { UserLogoutPage } from './components/UserLogoutPage/UserLogoutPage';
+import HomePage from './components/HomePage/HomePage';
 
 ReactDOM.render(
   <React.StrictMode>
     <HashRouter>
       <Switch>
-        <Route exact path="/" component= { HomePage } />
+        <Route exact path="/" component= { HomePage} />
+        <Route exact path="/products" component= { ProductPage } />
         <Route path="/contact" component= { ContactPage }/>
         <Route path="/user/login" component= { UserLoginPage }/>
         <Route path="/user/logout" component= { UserLogoutPage }/>

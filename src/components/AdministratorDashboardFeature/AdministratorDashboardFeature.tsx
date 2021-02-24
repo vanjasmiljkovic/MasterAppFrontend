@@ -160,8 +160,9 @@ class AdministratorDashboardFeature extends React.Component<AdministratorDashboa
             );
         }
 		return (
+            <>
+            <RoledMainMenu role="administrator" />
 			<Container>
-                <RoledMainMenu role="administrator" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -254,6 +255,7 @@ class AdministratorDashboardFeature extends React.Component<AdministratorDashboa
                 </Modal>
 
             </Container>
+            </>
 		);
     }
 

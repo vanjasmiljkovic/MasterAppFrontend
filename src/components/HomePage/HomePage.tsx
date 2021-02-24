@@ -1,119 +1,124 @@
-import React from 'react';
-import { Card, Col, Container, Row } from 'react-bootstrap';
-import { faListAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CategoryType from '../../types/CategoryType';
-import { Link, Redirect } from 'react-router-dom';
-import api, { ApiResponse } from '../../api/api';
-import RoledMainMenu from '../RoledMainMenu/RoledMainMenu';
-import ApiCategoryDto from '../../dtos/ApiCategoryDto';
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import { Button, Card, Carousel, Col, Container, ListGroup, Navbar, Row } from "react-bootstrap";
+import { ApiConfig } from "../../config/api.config";
+import HomePageArticles from "../HomePageArticles/HomePageArticles";
+import RoledMainMenu from "../RoledMainMenu/RoledMainMenu";
+import './HomePage.css';
 
-interface HomePageState {
-	isUserLoggedIn: boolean;
-	categories: CategoryType[];
-}
 
-class HomePage extends React.Component { 
-	state: HomePageState;
+export default class HomePage extends React.Component {
+    render() {
+        return(
+            <>
+            <Row className="Menu w-100">
+                    <RoledMainMenu role="visitor"/>
+            </Row>
+            <Container>
+                <Carousel>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100"
+                        src= {ApiConfig.PHOTO_PATH + 'slider1.jpg'}
+                        alt="First slide"
+                        />
+                        <Carousel.Caption>
+                        <h3>First slide label</h3>
+                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100"
+                        src= {ApiConfig.PHOTO_PATH + 'slider1.jpg'}
+                        alt="Third slide"
+                        />
 
-	constructor(props: {} | Readonly<{}>){
-		super(props);
+                        <Carousel.Caption>
+                        <h3>Second slide label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        className="d-block w-100"
+                        src= {ApiConfig.PHOTO_PATH + 'slider1.jpg'}
+                        alt="Third slide"
+                        />
 
-		this.state = {
-			isUserLoggedIn: true,
-			categories: [],
-		}
-    }
+                        <Carousel.Caption>
+                        <h3>Third slide label</h3>
+                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                </Carousel>
 
-    componentWillMount() {
-        this.getCategories();
-    }
-
-    componentWillUpdate() {
-        this.getCategories();
-    }
-    
-    //dopremanje podataka
-    private getCategories() { 
-        api('/api/category/?filter=parentCategoryId||$isnull', 'get', {}) //api metod - backend: category.controller.ts - vadimo samo one top level kategorije, koji nemaju parent kategoriju
-            .then( (res: ApiResponse) => {
-                if (res.status === "error" || res.status === "login") {
-                    this.setLoginState(false);
-                    return;
-                }
-
-                this.putCategoriesInState(res.data);
-            });
-    }
-
-    private putCategoriesInState(data: ApiCategoryDto[]) { //data nam je niz kategorija
-        const categories:CategoryType[] = data.map(category => { //taj niz mapiramo - za svaku kategoriju koju smo ucitali vracamo objekat
-            return {
-                categoryId: category.categoryId,
-                name: category.name,
-                items: [],
-            };
-        });
-
-        const newState = Object.assign(this.state, {
-            categories: categories,
-        });
-
-        this.setState(newState);
-    }
-
-    private setLoginState(isLoggedIn: boolean) {
-        const newState = Object.assign(this.state, {
-            isUserLoggedIn: isLoggedIn,
-        });
-
-        this.setState(newState);
-    }
-
-	render(){
-        if (this.state.isUserLoggedIn === false) {
-            return (
-                <Redirect to="/user/login"/>
-            );
-        }
-		return (
-			<Container>
-                <RoledMainMenu role="user" />
-                <Card>
-                    <Card.Body>
-                        <Card.Title>
-                        <FontAwesomeIcon icon= { faListAlt } /> Top level categories
-                        </Card.Title>
-                        <Row>
-                            { this.state.categories.map(this.singleCategory) }
+                <Row className="mt-3">
+                    <Col className="text-center" id="ColumnName">
+                        <strong>
+                            PROIZVODI
+                        </strong>
+                        <Row className="text-center ml-5" id="ColumnText">
+                            Manometri, termometri, transmiteri
                         </Row>
-                    </Card.Body>
-                </Card>
+                    </Col>
+                    <Col className="text-center" id="ColumnName">
+                        <strong>
+                            USLUGE
+                        </strong>
+                        <Row className="text-center" id="ColumnText">
+                        Montaža procesne opreme, remont postrojenja sa procesnom opremom
+                        </Row>
+                    </Col>
+                    <Col className="text-center" id="ColumnName">
+                        <strong>
+                            LABORATORIJA
+                        </strong>
+                        <Row className="text-center" id="ColumnText">
+                        Akreditovana laboratorija za etaloniranje merila pritiska i temperature
+                        </Row>
+                    </Col>
+                </Row>
+                <Row>
+                    <HomePageArticles />
+                </Row>
+
+                <Row>
+                    <Col xs="12" md="4" lg="3">
+                        <strong>PREUZMITE NAS KATALOG</strong>
+                    </Col>
+                    <Col xs="12" md="8" lg="9">
+                        <Button id="ButtonPdf" block onClick={ () => this.openPdf() } >
+                            <FontAwesomeIcon icon= { faFilePdf } /> Katalog opreme za merenje pritiska i temperature
+                        </Button>
+                    </Col>
+                </Row>
             </Container>
-		);
-    }
-    
-    private singleCategory(category: CategoryType){
-        return (
-            <Col lg="3" md="4" sm="6" xs="12">
-                <Card className="mb-3"> 
-                    <Card.Body>
-                        <Card.Title as="p">
-                            { category.name }
-                        </Card.Title>
-                        <Card.Text>
-                            Neki opis proizvoda lalalalalalalala
-                            to je sve proizvod .......
-                        </Card.Text>
-                        <Link to={`/category/${ category.categoryId }` }
-                              className="btn btn-primary btn-block btn-sm">
-                            Open category
-                        </Link>
-                    </Card.Body>
-                </Card>
-            </Col>
+            <Card.Footer className="Footer w-100">
+                    <Row>
+                        <Col xs="12" md="4" lg="4">
+                        Društvo zа inženjering, trgovinu tehničkom i sigurnosnom opremom, proizvodnju i metrologiju MERNOKOR d.o.o
+                        </Col>
+                        <Col xs="12" md="4" lg="4">
+                            Beograd, Srbija 
+                            Copyright &copy; 2021 
+                        </Col>
+                        <Col xs="12" md="4" lg="4">
+                            <p>
+                            Ratarski put 10b <br/>
+                            11080 Zemun, Srbija <br/>
+                            tel/fax: 011/316-0450 <br/>
+                            email: info@mernokor.com  <br/> 
+                            </p>  
+                        </Col>
+                    </Row>
+                </Card.Footer>
+            </>
         );
     }
-}
 
-export default HomePage;
+    private openPdf() {
+        window.open(ApiConfig.PDF_PATH + "/katalogProizvoda.pdf");
+    }
+}

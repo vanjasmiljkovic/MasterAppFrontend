@@ -180,8 +180,9 @@ export default class AdministratorDashboardOrder extends React.Component {
         const sum = this.calculateSum();
 
 		return (
+            <>
+            <RoledMainMenu role="administrator" />
 			<Container>
-                <RoledMainMenu role="administrator" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -253,6 +254,7 @@ export default class AdministratorDashboardOrder extends React.Component {
                     </Modal.Body>
                 </Modal>
             </Container>
+            </>
         );
     }
 

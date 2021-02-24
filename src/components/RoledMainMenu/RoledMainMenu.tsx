@@ -29,7 +29,7 @@ export default class RoledMainMenu extends React.Component<RoledMainMenuProperti
             new MainMenuItem("Pocetna strana", "/"),
             new MainMenuItem("Kontakt", "/contact/"),
             new MainMenuItem("O nama", "/about-us/"), //implementiraj
-            new MainMenuItem("Proizvodi", "/categories"), //implementiraj padajuci meni da ima kategorije
+            new MainMenuItem("Proizvodi", "/products"), //implementiraj padajuci meni da ima kategorije
             new MainMenuItem("Moje porudzbine", "/user/orders"), 
             new MainMenuItem("Log out", "/user/logout/"),
         ];
@@ -47,7 +47,7 @@ export default class RoledMainMenu extends React.Component<RoledMainMenuProperti
             new MainMenuItem("Pocetna strana", "/"),
             new MainMenuItem("Kontakt", "/contact/"),
             new MainMenuItem("O nama", "/about-us/"), //implementiraj
-            new MainMenuItem("Proizvodi", "/products"), //implementiraj padajuci meni da ima kategorije 
+            //new MainMenuItem("Proizvodi", "/products"), //implementiraj padajuci meni da ima kategorije 
             new MainMenuItem("User Log in", "/user/login/"),
             new MainMenuItem("Administrator Log in", "/administrator/login/"),
             new MainMenuItem("Registracija", "/user/register/"),

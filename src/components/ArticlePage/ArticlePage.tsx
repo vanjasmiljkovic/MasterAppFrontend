@@ -1,7 +1,7 @@
-import { faBoxOpen } from '@fortawesome/free-solid-svg-icons';
+import { faBoxOpen, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import api, { ApiResponse } from '../../api/api';
 import { ApiConfig } from '../../config/api.config';
@@ -26,7 +26,7 @@ interface ArticlePageState {
     isUserLoggedIn: boolean;
     message: string;
     article?: ApiArticleDto;
-    features: FeatureData[];
+    features: FeatureData[]; 
 }
 
 export default class ArticlePage extends React.Component<ArticlePageProperties> {
@@ -148,8 +148,9 @@ export default class ArticlePage extends React.Component<ArticlePageProperties> 
         }
 
         return (
+            <>
+            <RoledMainMenu role="user" />
             <Container>
-                <RoledMainMenu role="user" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -168,6 +169,7 @@ export default class ArticlePage extends React.Component<ArticlePageProperties> 
                     </Card.Body>
                 </Card>
             </Container>
+            </>
         );
     }
 
@@ -176,11 +178,14 @@ export default class ArticlePage extends React.Component<ArticlePageProperties> 
             <Row>
                 <Col xs="12" lg="8">
                     <div className="excerpt">
+                        <b>Kratak opis: </b> <br />
                         {article.excerpt}
+                        {console.log(article)}
                     </div>
                     <hr/>
 
                     <div className="description">
+                        <b>Detaljan opis: </b> <br />
                         {article.description}
                     </div>
                     <hr/>
@@ -194,6 +199,14 @@ export default class ArticlePage extends React.Component<ArticlePageProperties> 
                             </li>
                         ), this)}
                     </ul>
+                    <hr/>
+
+                    <b>Specifikacija: </b> <br /><br />
+
+                    <Button className="btn btn-info mr-2 w-50" block onClick={ () => window.open(ApiConfig.PDF_PATH + article.documentations[0].pdfPath) } >
+                            <FontAwesomeIcon icon= { faFilePdf } /> Otvori dokument
+                    </Button>
+
                 </Col>
 
                 <Col xs="12" lg="4">

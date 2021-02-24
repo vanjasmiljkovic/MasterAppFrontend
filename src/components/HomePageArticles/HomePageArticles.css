@@ -1,0 +1,15 @@
+.nav-tabs .nav-link {
+    color: #000;
+}
+
+.nav-tabs .nav-link:hover{
+    color: #3c1361;
+}
+
+#buttonLink {
+    background-color: rgba(0, 0, 0, 0.45);
+    border: none;
+    height: 40px;
+    font-size: medium;
+    padding-top: 8px;
+}

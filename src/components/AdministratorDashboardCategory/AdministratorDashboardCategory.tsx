@@ -158,8 +158,9 @@ class AdministratorDashboardCategory extends React.Component {
             );
         }
 		return (
+            <>
+            <RoledMainMenu role="administrator" />
 			<Container>
-                <RoledMainMenu role="administrator" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -291,6 +292,7 @@ class AdministratorDashboardCategory extends React.Component {
                 </Modal>
 
             </Container>
+            </>
 		);
     }
 

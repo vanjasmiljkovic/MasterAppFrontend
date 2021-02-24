@@ -34,8 +34,9 @@ export class UserLogoutPage extends React.Component {
         }
 
         return (
+            <>
+            <RoledMainMenu role="user" />
             <Container>
-                <RoledMainMenu role="user" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -44,6 +45,7 @@ export class UserLogoutPage extends React.Component {
                     </Card.Body>
                 </Card>
             </Container>
+            </>
         );
     }
 

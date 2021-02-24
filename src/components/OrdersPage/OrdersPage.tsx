@@ -194,8 +194,9 @@ export default class OrdersPage extends React.Component {
         const sum = this.calculateSum();
 
         return (
+            <>
+            <RoledMainMenu role="user" />
 			<Container>
-                <RoledMainMenu role="user" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -264,6 +265,7 @@ export default class OrdersPage extends React.Component {
                     </Modal.Body>
                 </Modal>
             </Container>
+            </>
 		);
     }
 

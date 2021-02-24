@@ -1,7 +1,5 @@
 import React from 'react';
-import { Card, Col, Button, Form, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { ApiConfig } from '../../config/api.config';
+import { Col, Button, Form, Row } from 'react-bootstrap';
 import ArticleType from '../../types/ArticleType';
 import api, { ApiResponse } from '../../api/api';
 

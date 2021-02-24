@@ -7,8 +7,9 @@ import RoledMainMenu from '../RoledMainMenu/RoledMainMenu';
 export class ContactPage extends React.Component {
     render() {
         return (
+            <>
+            <RoledMainMenu role="user" />
             <Container>
-                <RoledMainMenu role="user" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -20,6 +21,7 @@ export class ContactPage extends React.Component {
                     </Card.Body>
                 </Card>
             </Container>
+            </>
         );
     }
 }

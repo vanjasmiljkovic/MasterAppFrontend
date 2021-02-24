@@ -101,8 +101,9 @@ export class AdministratorLoginPage extends React.Component {
         }
         //u suprotnom ostavi korisnika na log in stranici
         return (
+            <>
+            <RoledMainMenu role="visitor" />
             <Container>
-                <RoledMainMenu role="visitor" />
                 <Col md={ { span: 6, offset: 3 } }>
                     <Card>
                         <Card.Body>
@@ -137,6 +138,7 @@ export class AdministratorLoginPage extends React.Component {
                     </Card>
                 </Col>  
             </Container>
+            </>
         );
     }
 }

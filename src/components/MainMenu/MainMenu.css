@@ -1,0 +1,22 @@
+#nav {
+    background-color: #E0E0E0;
+    width: 100%;
+}
+
+#nav img {
+    background-color: #E0E0E0;
+    margin-right: 75px;
+}
+
+#navItem {
+    margin-left: 50px;
+    color: black;
+    height: 50px;
+    margin-top: 25px;
+    font-size: large;
+    text-align: center;
+}
+
+.nav-link a{
+    font-size: 20px;
+}

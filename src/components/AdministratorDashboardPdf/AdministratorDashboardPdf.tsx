@@ -81,8 +81,9 @@ class AdministratorDashboardPdf extends React.Component<AdministratorDashboardPd
             );
         }
 		return (
+            <>
+            <RoledMainMenu role="administrator" />
 			<Container>
-                <RoledMainMenu role="administrator" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -116,6 +117,7 @@ class AdministratorDashboardPdf extends React.Component<AdministratorDashboardPd
                     </Card.Body>
                 </Card>
             </Container>
+            </>
 		);
     }   
 

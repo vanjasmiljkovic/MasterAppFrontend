@@ -53,8 +53,9 @@ export class UserRegistrationPage extends React.Component {
 
     render() {
         return (
+            <>
+            <RoledMainMenu role="visitor" />
             <Container>
-                <RoledMainMenu role="visitor" />
                 <Col md= { {span: 8, offset: 2} }> 
                     <Card>
                         <Card.Body>
@@ -70,6 +71,7 @@ export class UserRegistrationPage extends React.Component {
                     </Card>
                 </Col>
             </Container>
+            </>
         );
     }
 

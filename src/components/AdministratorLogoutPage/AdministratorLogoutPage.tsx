@@ -34,8 +34,9 @@ export class AdministratorLogoutPage extends React.Component {
         }
 
         return (
-            <Container>
-                <RoledMainMenu role="administrator" />
+            <>
+            <RoledMainMenu role="administrator" />
+            <Container> 
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -44,6 +45,7 @@ export class AdministratorLogoutPage extends React.Component {
                     </Card.Body>
                 </Card>
             </Container>
+            </>
         );
     }
 

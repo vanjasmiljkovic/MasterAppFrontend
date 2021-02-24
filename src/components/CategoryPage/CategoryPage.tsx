@@ -137,16 +137,19 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
             );
         }
         return (
+            <>
+            <RoledMainMenu role="user" />
             <Container>
-                <RoledMainMenu role="user" />
                 <Card>
                     <Card.Body>
-                        <Card.Title>
+                        <Card.Title className="mb-4 border">
                         <FontAwesomeIcon icon= { faListAlt } /> { this.state.category?.name}  {/*ako postoji category ispisi njegovo ime */}
                         </Card.Title>
+
                         { this.printOptionalMessage() }
 
                         { this.showSubcategories() }
+
                         <Row>
                             <Col xs="12" md="4" lg="3">
                                 { this.printFilters() }
@@ -158,6 +161,7 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
                     </Card.Body>
                 </Card>
             </Container>
+            </>
         );
     }
 
@@ -248,6 +252,7 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
         return (
           <>
             <Form.Group>
+                <Form.Text className="text-center"><h3>Filteri za pretragu</h3></Form.Text>
                 <Form.Label htmlFor="keywoards">Kljucne reci:</Form.Label>
                 <Form.Control type="text" id="keywoards"
                               value={ this.state.filters?.keywords } 
@@ -338,7 +343,7 @@ export default class CategoryPage extends React.Component<CategoryPageProperties
     
     private singleCategory(category: CategoryType){
         return (
-            <Col lg="3" md="4" sm="6" xs="12">
+            <Col lg="3" md="4" sm="6" xs="12" key={ 'Category ' + category.categoryId }>
                 <Card className="mb-3"> 
                     <Card.Body>
                         <Card.Title as="p">

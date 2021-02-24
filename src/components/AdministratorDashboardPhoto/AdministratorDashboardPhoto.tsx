@@ -81,8 +81,9 @@ class AdministratorDashboardPhoto extends React.Component<AdministratorDashboard
             );
         }
 		return (
+            <>
+            <RoledMainMenu role="administrator" />
 			<Container>
-                <RoledMainMenu role="administrator" />
                 <Card>
                     <Card.Body>
                         <Card.Title>
@@ -117,6 +118,7 @@ class AdministratorDashboardPhoto extends React.Component<AdministratorDashboard
                     </Card.Body>
                 </Card>
             </Container>
+            </>
 		);
     }  
     
